@@ -16,6 +16,9 @@ cvsToJsonConverter()
 
         deleteTweet(tmpTweetID);
     })
+    .on('done',(error)=>{
+        postFinishedMessage();
+    })
 
 function deleteTweet(tweetID){
     client.post('statuses/destroy', {id: tweetID},  function(error, tweet, response) {
@@ -24,6 +27,15 @@ function deleteTweet(tweetID){
             console.log(error);
         }else{
             console.log("Deleted tweet: " + tweetID);
+        }
+    });
+}
+
+function postFinishedMessage(){
+    client.post('statuses/update', {status: 'Hello Twitter! #myfirstTweet github.com/cankatabaci/clean-twitter'}, function(error, tweet, response) {
+        if (!error) {
+        console.log("Cleaning is finished");
+        console.log(tweet.text);
         }
     });
 }
